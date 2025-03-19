@@ -29,15 +29,15 @@ public class TileClicking : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Vector3 mousePosition = Input.mousePosition;
-            float screenHeight = Screen.height;
 
 
             // saving the position of where the mouse was click
             Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(mousePosition);
             mouseWorldPos.z = 0;
 
-         
+
             Vector3Int cellPosition = grid.WorldToCell(mouseWorldPos);
+            spawnPosition = grid.GetCellCenterWorld(cellPosition);
             foreach (Tilemap tilemap in tilemaps)
             {
                 if (tilemap.GetTile(cellPosition) != null && tilemap.gameObject.name.ToLower().Contains("road"))
@@ -47,23 +47,13 @@ public class TileClicking : MonoBehaviour
                 }
             }
 
-            if (mousePosition.y > screenHeight / 2)
+            if (!TowerAlreadyExists(spawnPosition))
             {
-                // Debug.Log("Clicked on the TOP half of the screen");
-                bottomPanel.SetActive(true);
-                topPanel.SetActive(false);
+                bool selectedUpper = mousePosition.y > Screen.height / 2;
+                bottomPanel.SetActive(selectedUpper);
+                topPanel.SetActive(!selectedUpper);
                 isShopping = true;
             }
-            else
-            {
-                // Debug.Log("Clicked on the BOTTOM half of the screen");
-                topPanel.SetActive(true);
-                bottomPanel.SetActive(false);
-                isShopping = true;
-            }
-
-           
-            spawnPosition = grid.GetCellCenterWorld(cellPosition);
         }
 
 

@@ -13,55 +13,78 @@ public class ArcherTower : MonoBehaviour
     {
         CircleCollider2D collider = gameObject.AddComponent<CircleCollider2D>();
         collider.isTrigger = true;
-        collider.radius = attackRange;
+        collider.radius = .5f;
     }
 
     void Update()
     {
         attackTimer += Time.deltaTime;
 
-        if (enemiesInRange.Count > 0 && attackTimer >= attackCooldown)
+        // Only search for enemies every attack cooldown
+        if (attackTimer >= attackCooldown)
         {
-            Attack();
-            attackTimer = 0f;
+            Transform target = FindClosestEnemy();
+            if (target != null)
+            {
+                Attack(target);
+                attackTimer = 0f;
+            }
         }
     }
 
-    void Attack()
+    Transform FindClosestEnemy()
     {
-        if (enemiesInRange.Count > 0)
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        Transform closestEnemy = null;
+        float closestDistance = attackRange;
+
+        foreach (GameObject enemy in enemies)
         {
-            GameObject target = enemiesInRange[0];
-
-
-            // Calculate direction to target
-            Vector3 direction = (target.transform.position - firePoint.position).normalized;
-
-            // Calculate the rotation angle (convert to degrees)
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
-            // Apply rotation (subtract 90 degrees if the arrow starts facing up)
-            Quaternion rotation = Quaternion.Euler(0, 0, angle - 90);
-
-            // Instantiate projectile with correct rotation
-            GameObject projectile = Instantiate(projectilePrefab, firePoint.position, rotation);
-            projectile.GetComponent<Projectile>().SetTarget(target.transform);
+            float distance = Vector2.Distance(transform.position, enemy.transform.position);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestEnemy = enemy.transform;
+            }
         }
+
+        return closestEnemy;
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    void Attack(Transform target)
     {
-        if (other.CompareTag("Enemy"))
-        {
-            enemiesInRange.Add(other.gameObject);
-        }
+        if (target == null) return;
+
+        Vector3 direction = (target.position - firePoint.position).normalized;
+
+        // Calculate the rotation angle (convert to degrees)
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        // Apply rotation (subtract 90 degrees if the arrow starts facing up)
+        Quaternion rotation = Quaternion.Euler(0, 0, angle - 90);
+
+        // Instantiate projectile with correct rotation
+        GameObject projectile = Instantiate(projectilePrefab, firePoint.position, rotation);
+        projectile.GetComponent<Projectile>().damage = 1;
+        projectile.GetComponent<Projectile>().SetTarget(target);
     }
 
-    void OnTriggerExit2D(Collider2D other)
+    // Draw attack range in Scene view
+    private void OnDrawGizmos()
     {
-        if (other.CompareTag("Enemy"))
-        {
-            enemiesInRange.Remove(other.gameObject);
-        }
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
+    }
+
+    void OnMouseOver()
+    {
+        SpriteRenderer childSprite = transform.GetChild(0).GetComponent<SpriteRenderer>();
+        childSprite.enabled = true;
+    }
+
+    void OnMouseExit()
+    {
+        SpriteRenderer childSprite = transform.GetChild(0).GetComponent<SpriteRenderer>();
+        childSprite.enabled = false;
     }
 }
