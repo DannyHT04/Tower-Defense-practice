@@ -51,6 +51,12 @@ public class Shopping : MonoBehaviour
         }
     }
 
+    public void UpdateMoney(int Amount)
+    {
+        totalMoney += Amount;
+        moneyTxt.text = "$" + totalMoney.ToString();
+    }
+
 
 
 

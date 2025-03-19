@@ -45,7 +45,7 @@ public class WaveSpawn : MonoBehaviour
             {
                 GameObject enemy = Instantiate(enemyInfo.enemyPrefab, spawnPoint.position, Quaternion.identity);
                 activeEnemies++;
-                // enemy.GetComponent<EnemyHealth>().OnDeath += EnemyDefeated;
+                enemy.GetComponent<EnemyHealth>().OnDeath += EnemyDefeated;
                 yield return new WaitForSeconds(wave.spawnInterval);
             }
         }

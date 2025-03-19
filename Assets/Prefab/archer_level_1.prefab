@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 2087798124351289446}
   - component: {fileID: 8488579426320174908}
   - component: {fileID: 3321418020977493857}
-  m_Layer: 0
+  - component: {fileID: -7558325978782110802}
+  m_Layer: 6
   m_Name: archer_level_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,3 +105,24 @@ MonoBehaviour:
   attackCooldown: 1
   projectilePrefab: {fileID: 5126456361607233817, guid: a00d3fd5e0cbfc049ac9ed116a311ba8, type: 3}
   firePoint: {fileID: 2087798124351289446}
+--- !u!65 &-7558325978782110802
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3060335028421615128}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.79918957, y: 1.0612049, z: 0.2}
+  m_Center: {x: 0.00000047683716, y: -0.0018129349, z: 0}

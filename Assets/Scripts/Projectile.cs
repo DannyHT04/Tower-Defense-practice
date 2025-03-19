@@ -4,6 +4,7 @@ public class Projectile : MonoBehaviour
 {
     public float speed = 5f;
     private Transform target;
+    public int damage =0;
 
     public void SetTarget(Transform newTarget)
     {
@@ -24,6 +25,7 @@ public class Projectile : MonoBehaviour
         {
             Destroy(gameObject);
             // You could also trigger damage logic here
+            target.GetComponent<EnemyHealth>().TakeDamage(1);
         }
     }
 }

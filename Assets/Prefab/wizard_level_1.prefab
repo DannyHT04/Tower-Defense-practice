@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3099214198328498509}
   - component: {fileID: 9211533500848759879}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: wizard_level_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
